@@ -6,32 +6,31 @@ kind: Kustomization
 # resources do container conforme o profile (mesmo profile dirige a quota na
 # Claim AppNamespace); http e availability entram conforme o scaffolder.
 components:
-  - https://github.com/TourinhoM/platform-app-base//components/workload?ref=main
-  - https://github.com/TourinhoM/platform-app-base//components/metrics?ref=main
-  - https://github.com/TourinhoM/platform-app-base//components/size-small?ref=main
-  - https://github.com/TourinhoM/platform-app-base//components/http?ref=main
+- https://github.com/TourinhoM/platform-app-base//components/workload?ref=main
+- https://github.com/TourinhoM/platform-app-base//components/metrics?ref=main
+- https://github.com/TourinhoM/platform-app-base//components/size-small?ref=main
+- https://github.com/TourinhoM/platform-app-base//components/http?ref=main
 
 resources:
-  - claims/appnamespace.yaml
+- claims/appnamespace.yaml
 
 # Label em metadata e no pod template (não nos selectors imutáveis) para o
 # plugin Kubernetes do Backstage descobrir os workloads E os pods via kubernetes-id.
 labels:
-  - pairs:
-      backstage.io/kubernetes-id: exp-xr
-    includeSelectors: false
-    includeTemplates: true
+- includeTemplates: true
+  pairs:
+    backstage.io/kubernetes-id: exp-xr
 
 generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - name: app-config
-    literals:
-      - name=exp-xr
-      - hostname=exp-xr.local
+- literals:
+  - name=exp-xr
+  - hostname=exp-xr.local
+  name: app-config
 
 images:
-  - name: app-image
-    newName: ghcr.io/tourinho-labs/exp-xr
-    newTag: latest
+- name: app-image
+  newName: ghcr.io/tourinho-labs/exp-xr
+  newTag: 1.0.1

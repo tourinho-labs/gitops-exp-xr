@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Compõe o golden path a partir dos fragments do platform-app-base.
+# workload + metrics sempre (comum a qualquer microserviço); o size patcha os
+# resources do container conforme o profile (mesmo profile dirige a quota na
+# Claim AppNamespace); http e availability entram conforme o scaffolder.
+components:
+  - https://github.com/TourinhoM/platform-app-base//components/workload?ref=main
+  - https://github.com/TourinhoM/platform-app-base//components/metrics?ref=main
+  - https://github.com/TourinhoM/platform-app-base//components/size-small?ref=main
+  - https://github.com/TourinhoM/platform-app-base//components/http?ref=main
+
+resources:
+  - claims/appnamespace.yaml
+
+# Label em metadata e no pod template (não nos selectors imutáveis) para o
+# plugin Kubernetes do Backstage descobrir os workloads E os pods via kubernetes-id.
+labels:
+  - pairs:
+      backstage.io/kubernetes-id: exp-xr
+    includeSelectors: false
+    includeTemplates: true
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: app-config
+    literals:
+      - name=exp-xr
+      - hostname=exp-xr.local
+
+images:
+  - name: app-image
+    newName: ghcr.io/tourinho-labs/exp-xr
+    newTag: latest

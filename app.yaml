@@ -1,0 +1,14 @@
+# GENERATED pelo gitops-render a partir de tourinho-labs/exp-xr@1789420ea92c6bf574bdb5901c1780ba40ca4697 — NÃO EDITE.
+# Mudanças manuais são sobrescritas no próximo render; a fonte da verdade
+# é o service.yaml do repo de aplicação.
+apiVersion: platform.lab/v1alpha1
+kind: App
+metadata:
+  name: exp-xr
+spec:
+  # Placeholder: o images transformer do kustomization wrapper troca por
+  # ghcr.io/...:<tag> no build do Argo — a promoção de tag do ci-tag
+  # continua dona da imagem, igual ao Caminho A.
+  image: app-image
+  size: small
+  http: true

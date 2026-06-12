@@ -1,8 +1,0 @@
-apiVersion: platform.lab/v1alpha1
-kind: App
-metadata:
-  name: exp-xr
-spec:
-  image: app-image
-  size: large
-  http: true

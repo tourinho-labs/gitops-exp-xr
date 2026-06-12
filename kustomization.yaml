@@ -1,19 +1,35 @@
-# GENERATED pelo gitops-render a partir de tourinho-labs/exp-xr@1789420ea92c6bf574bdb5901c1780ba40ca4697 — NÃO EDITE.
-# Mudanças manuais são sobrescritas no próximo render; a fonte da verdade
-# é o service.yaml do repo de aplicação.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-# Wrapper fino: o conteúdo real é o App XR (app.yaml) — a composição dos
-# recursos acontece no cluster (Crossplane), não neste build.
-resources:
-  - app.yaml
+# Workload no modelo edit-friendly: components do app-base (golden path),
+# env em arquivo plano, ganchos de capability ligam sozinhos (envFrom
+# optional no app-base). Editado SÓ por Backstage e CI de promoção.
+components:
+  - https://github.com/TourinhoM/platform-app-base//components/workload?ref=main
+  - https://github.com/TourinhoM/platform-app-base//components/metrics?ref=main
+  - https://github.com/TourinhoM/platform-app-base//components/size-small?ref=main
+  - https://github.com/TourinhoM/platform-app-base//components/http?ref=main
 
-# Ensina o images transformer a enxergar App.spec.image — assim o
-# update-kustomize-image da promoção de tag (ci-tag) funciona idêntico
-# nos dois caminhos do experimento, sem mudança na plataforma de CI.
-configurations:
-  - kustomizeconfig.yaml
+resources:
+  - claims/appnamespace.yaml
+
+labels:
+  - pairs:
+      backstage.io/kubernetes-id: exp-xr
+    includeSelectors: false
+    includeTemplates: true
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: app-config
+    literals:
+      - name=exp-xr
+      - hostname=exp-xr.local
+  - name: app-env
+    envs:
+      - env.properties
 
 images:
   - name: app-image

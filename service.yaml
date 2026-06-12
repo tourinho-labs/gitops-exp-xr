@@ -1,7 +1,0 @@
-# GENERATED pelo gitops-render a partir de tourinho-labs/exp-xr@1789420ea92c6bf574bdb5901c1780ba40ca4697 — NÃO EDITE.
-# Fonte da verdade: o service.yaml do repo de aplicação.
-# Service definition — única superfície de deploy que o dev edita.
-# Schema: org-ci-platform/.github/actions/service-definition-validate/schema.json
-name: exp-xr
-size: small
-http: true

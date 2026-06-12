@@ -12,6 +12,7 @@ components:
 
 resources:
   - claims/appnamespace.yaml
+  - claims/appdatabase.yaml
 
 labels:
   - pairs:

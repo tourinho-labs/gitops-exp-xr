@@ -1,0 +1,9 @@
+apiVersion: platform.lab/v1alpha1
+kind: AppDatabase
+metadata:
+  name: exp-xr
+  namespace: default
+spec:
+  databaseName: exp_xr
+  appUser: exp_xr_user
+  appNamespace: exp-xr
